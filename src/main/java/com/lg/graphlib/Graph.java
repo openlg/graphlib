@@ -491,8 +491,8 @@ public class Graph<N, E> implements Serializable {
 	}
 
 
-	public Collection<Edge> getInEdges(String nodeId) {
-		return getInEdges(nodeId, null);
+	public Collection<Edge> inEdges(String nodeId) {
+		return inEdges(nodeId, null);
 	}
 
 	/**
@@ -502,7 +502,7 @@ public class Graph<N, E> implements Serializable {
 	 * @param sourceId Optionally filters
 	 * @return java.util.Collection<Edge>
 	 */
-	public Collection<Edge> getInEdges(String nodeId, String sourceId) {
+	public Collection<Edge> inEdges(String nodeId, String sourceId) {
 		Map<String, Edge> edges = in.get(nodeId);
 
 		if (edges != null) {
@@ -515,8 +515,8 @@ public class Graph<N, E> implements Serializable {
 		return Collections.emptyList();
 	}
 
-	public Collection<Edge> getOutEdges(String nodeId) {
-		return getOutEdges(nodeId, null);
+	public Collection<Edge> outEdges(String nodeId) {
+		return outEdges(nodeId, null);
 	}
 
 	/**
@@ -526,7 +526,7 @@ public class Graph<N, E> implements Serializable {
 	 * @param targetId Optionally filters
 	 * @return java.util.Collection<Edge>
 	 */
-	public Collection<Edge> getOutEdges(String nodeId, String targetId) {
+	public Collection<Edge> outEdges(String nodeId, String targetId) {
 		Map<String, Edge> edges = out.get(nodeId);
 
 		if (edges != null) {
@@ -550,8 +550,8 @@ public class Graph<N, E> implements Serializable {
 	 * @return
 	 */
 	public Collection<Edge> nodeEdges(String nodeId, String connectedNodeId) {
-		Collection<Edge> _inEdges = getInEdges(nodeId, connectedNodeId);
-		_inEdges.addAll(getOutEdges(nodeId, connectedNodeId));
+		Collection<Edge> _inEdges = inEdges(nodeId, connectedNodeId);
+		_inEdges.addAll(outEdges(nodeId, connectedNodeId));
 		return _inEdges;
 	}
 

@@ -6,7 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.stream.Stream;
 
@@ -619,23 +618,23 @@ public class TestGraph {
 	public void testInEdge(){
 		// returns empty array for a node that is not in the graph.
 		Graph<String, String> g = new Graph<>();
-		Assert.assertEquals(g.getInEdges("a").size(), 0);
+		Assert.assertEquals(g.inEdges("a").size(), 0);
 
 		// returns the edges that point at the specified node.
 		g.setEdge("a", "b");
 		g.setEdge("b", "c");
-		Assert.assertArrayEquals(g.getInEdges("a").toArray(), new Edge[0]);
-		Assert.assertArrayEquals(g.getInEdges("b").toArray(), new Edge[]{new Edge("a", "b")});
-		Assert.assertArrayEquals(g.getInEdges("c").toArray(), new Edge[]{new Edge("b", "c")});
+		Assert.assertArrayEquals(g.inEdges("a").toArray(), new Edge[0]);
+		Assert.assertArrayEquals(g.inEdges("b").toArray(), new Edge[]{new Edge("a", "b")});
+		Assert.assertArrayEquals(g.inEdges("c").toArray(), new Edge[]{new Edge("b", "c")});
 
 		// workers for mulitgraphs
 		g = new Graph<>(true, true, false);
 		g.setEdge("a", "b");
 		g.setEdge("a", "b", null, "foo");
 		g.setEdge("a", "b", null, "bar");
-		Assert.assertArrayEquals(g.getInEdges("a").toArray(), new Edge[0]);
+		Assert.assertArrayEquals(g.inEdges("a").toArray(), new Edge[0]);
 
-		Assert.assertArrayEquals(g.getInEdges("b").stream().sorted(
+		Assert.assertArrayEquals(g.inEdges("b").stream().sorted(
 				(edge1, edge2) -> {
 					if (edge1.getName() == null && edge2.getName() == null) {
 						return 0;
@@ -653,6 +652,21 @@ public class TestGraph {
 						new Edge("a", "b", "foo"),
 						new Edge("a", "b"),
 				});
+
+		// can return only edges from a specified node
+		g = new Graph<>(true, true, false);
+		g.setEdge("a", "b");
+		g.setEdge("a", "b", null, "foo");
+		g.setEdge("a", "c");
+		g.setEdge("b", "c");
+		g.setEdge("z", "a");
+		g.setEdge("z", "b");
+		Assert.assertArrayEquals(g.inEdges("a", "b").toArray(), new Edge[0]);
+		Assert.assertArrayEquals(g.inEdges("b", "a").stream().sorted((e1, e2) -> e1.getName() == null ? 1 : e1.getName().compareTo(e2.getName())).toArray(), new Edge[]{
+				new Edge("a", "b", "foo"),
+				new Edge("a", "b")
+		});
+
 	}
 
 }
