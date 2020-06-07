@@ -669,4 +669,60 @@ public class TestGraph {
 
 	}
 
+	@Test
+	public void testOutEdges(){
+		// returns empty array for a node that is not in the graph
+		Graph<String, String> g = new Graph<>();
+		Assert.assertEquals(g.outEdges("a").size(), 0);
+
+		// returns all edges that this node points at
+		g.setEdge("a", "b");
+		g.setEdge("b", "c");
+		Assert.assertArrayEquals(g.outEdges("a").toArray(), new Edge[]{new Edge("a", "b")});
+		Assert.assertArrayEquals(g.outEdges("b").toArray(), new Edge[]{new Edge("b", "c")});
+		Assert.assertArrayEquals(g.outEdges("c").toArray(), new Edge[]{});
+
+		// works for multigraphs
+		g = new Graph<>(true, true, false);
+		g.setEdge("a", "b");
+		g.setEdge("a", "b", null, "bar");
+		g.setEdge("a", "b", null, "foo");
+		Assert.assertArrayEquals(g.outEdges("a").stream().sorted((o1, o2) -> {
+			if(o1 == null && o2 == null)
+				return 0;
+			if(o1 == null)
+				return -1;
+			if(o2 == null)
+				return 1;
+			return o1.getName().compareTo(o2.getName());
+		}).toArray(), new Edge[]{
+				new Edge("a", "b", "bar"),
+				new Edge("a", "b", "foo"),
+				new Edge("a", "b")
+		});
+
+		// can return only edges to a specified node
+		g = new Graph<>(true, true, false);
+		g.setEdge("a", "b");
+		g.setEdge("a", "b", null, "foo");
+		g.setEdge("a", "c");
+		g.setEdge("b", "c");
+		g.setEdge("z", "a");
+		g.setEdge("z", "b");
+		Assert.assertArrayEquals(g.outEdges("a", "b").stream().sorted((o1, o2) -> {
+			if(o1 == null && o2 == null)
+				return 0;
+			if(o1 == null)
+				return -1;
+			if(o2 == null)
+				return 1;
+			return o1.getName().compareTo(o2.getName());
+		}).toArray(), new Edge[]{
+				new Edge("a", "b", "foo"),
+				new Edge("a", "b")
+		});
+		Assert.assertEquals(g.outEdges("b", "a").size(), 0);
+
+	}
+
 }
