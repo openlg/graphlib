@@ -687,15 +687,17 @@ public class TestGraph {
 		g.setEdge("a", "b");
 		g.setEdge("a", "b", null, "bar");
 		g.setEdge("a", "b", null, "foo");
-		Assert.assertArrayEquals(g.outEdges("a").stream().sorted((o1, o2) -> {
-			if(o1 == null && o2 == null)
+		Assert.assertArrayEquals(g.outEdges("a").stream().sorted(((o1, o2) -> {
+			String name1 = o1.getName();
+			String name2 = o2.getName();
+			if(name1 == null && name2 == null)
 				return 0;
-			if(o1 == null)
-				return -1;
-			if(o2 == null)
+			if(name1 == null)
 				return 1;
-			return o1.getName().compareTo(o2.getName());
-		}).toArray(), new Edge[]{
+			if(name2 == null)
+				return -1;
+			return name1.compareTo(name2);
+		})).toArray(), new Edge[]{
 				new Edge("a", "b", "bar"),
 				new Edge("a", "b", "foo"),
 				new Edge("a", "b")
@@ -710,19 +712,124 @@ public class TestGraph {
 		g.setEdge("z", "a");
 		g.setEdge("z", "b");
 		Assert.assertArrayEquals(g.outEdges("a", "b").stream().sorted((o1, o2) -> {
-			if(o1 == null && o2 == null)
+			String name1 = o1.getName();
+			String name2 = o2.getName();
+			if(name1 == null && name2 == null)
 				return 0;
-			if(o1 == null)
-				return -1;
-			if(o2 == null)
+			if(name1 == null)
 				return 1;
-			return o1.getName().compareTo(o2.getName());
+			if(name2 == null)
+				return -1;
+			return name1.compareTo(name2);
 		}).toArray(), new Edge[]{
 				new Edge("a", "b", "foo"),
 				new Edge("a", "b")
 		});
 		Assert.assertEquals(g.outEdges("b", "a").size(), 0);
 
+	}
+
+	@Test
+	public void testNodeEdge(){
+		// returns empty for a node that is not in the graph.
+		Graph<String, String> g = new Graph<>();
+		Assert.assertEquals(g.nodeEdges("a").size(), 0);
+
+		// returns all edges that this node points at
+		g.setEdge("a", "b");
+		g.setEdge("b", "c");
+		Assert.assertArrayEquals(g.nodeEdges("a").toArray(), new Edge[]{
+				new Edge("a", "b")
+		});
+		Assert.assertArrayEquals(g.nodeEdges("b").stream().sorted((o1, o2) -> {
+			String str1 = o1.getSource() + o1.getTarget();
+			String str2 = o2.getSource() + o2.getTarget();
+			return str1.compareTo(str2);
+		}).toArray(), new Edge[]{
+				new Edge("a", "b"),
+				new Edge("b", "c")
+		});
+
+		// workers for multigraphs
+		g = new Graph<>(true, true, false);
+		g.setEdge("a", "b");
+		g.setEdge("a", "b", null, "bar");
+		g.setEdge("a", "b", null, "foo");
+		g.setEdge("b", "c", null, "bar");
+		Assert.assertArrayEquals(g.nodeEdges("a").stream().sorted((o1, o2) -> {
+			String name1 = o1.getName();
+			String name2 = o2.getName();
+			if(name1 == null && name2 == null)
+				return 0;
+			if(name1 == null)
+				return 1;
+			if(name2 == null)
+				return -1;
+			return name1.compareTo(name2);
+		}).toArray(), new Edge[]{
+				new Edge("a", "b", "bar"),
+				new Edge("a", "b", "foo"),
+				new Edge("a", "b")
+		});
+		Assert.assertArrayEquals(g.nodeEdges("b").stream().sorted((o1, o2) -> {
+			String str1 = o1.getSource() + o1.getTarget();
+			String str2 = o2.getSource() + o2.getTarget();
+			int compare = str1.compareTo(str2);
+			if( compare != 0)
+				return compare;
+
+			String name1 = o1.getName();
+			String name2 = o2.getName();
+			if(name1 == null && name2 == null)
+				return 0;
+			if(name1 == null)
+				return 1;
+			if(name2 == null)
+				return -1;
+			return name1.compareTo(name2);
+		}).toArray(), new Edge[]{
+				new Edge("a", "b", "bar"),
+				new Edge("a", "b", "foo"),
+				new Edge("a", "b"),
+				new Edge("b", "c", "bar"),
+		});
+
+		// can return only edges between specific nodes
+		g = new Graph<>(true, true, false);
+		g.setEdge("a", "b");
+		g.setEdge(new Edge("a", "b", "foo"));
+		g.setEdge("a", "c");
+		g.setEdge("b", "c");
+		g.setEdge("z", "a");
+		g.setEdge("z", "b");
+		Assert.assertArrayEquals(g.nodeEdges("a", "b").stream().sorted(((o1, o2) -> {
+			String name1 = o1.getName();
+			String name2 = o2.getName();
+			if(name1 == null && name2 == null)
+				return 0;
+			if(name1 == null)
+				return 1;
+			if(name2 == null)
+				return -1;
+			return name1.compareTo(name2);
+		})).toArray(), new Edge[]{
+				new Edge("a", "b", "foo"),
+				new Edge("a", "b"),
+		});
+		Assert.assertArrayEquals(g.nodeEdges("b", "a").stream().sorted(((o1, o2) -> {
+			String name1 = o1.getName();
+			String name2 = o2.getName();
+			if(name1 == null && name2 == null)
+				return 0;
+			if(name1 == null)
+				return 1;
+			if(name2 == null)
+				return -1;
+			return name1.compareTo(name2);
+		})).toArray(), new Edge[]{
+				new Edge("a", "b", "foo"),
+				new Edge("a", "b"),
+		});
 	}
 
 }

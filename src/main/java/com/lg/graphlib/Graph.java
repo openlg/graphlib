@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * A directed multi-graph library
@@ -551,8 +552,7 @@ public class Graph<N, E> implements Serializable {
 	 */
 	public Collection<Edge> nodeEdges(String nodeId, String connectedNodeId) {
 		Collection<Edge> _inEdges = inEdges(nodeId, connectedNodeId);
-		_inEdges.addAll(outEdges(nodeId, connectedNodeId));
-		return _inEdges;
+		return Stream.concat(_inEdges.stream(), outEdges(nodeId, connectedNodeId).stream()).collect(Collectors.toList());
 	}
 
 	/**
@@ -589,7 +589,7 @@ public class Graph<N, E> implements Serializable {
 		Collection<String> sucs = successors(nodeId);
 
 		if (pred != null && sucs != null)
-			pred.addAll(sucs);
+			pred.addAll(sucs);// Stream.concat(pred.stream(), sucs.stream()).collect(Collectors.toList());
 
 		return pred != null ? pred : sucs != null ? sucs : Collections.emptyList();
 	}
