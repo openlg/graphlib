@@ -662,7 +662,18 @@ public class TestGraph {
 		g.setEdge("z", "a");
 		g.setEdge("z", "b");
 		Assert.assertArrayEquals(g.inEdges("a", "b").toArray(), new Edge[0]);
-		Assert.assertArrayEquals(g.inEdges("b", "a").stream().sorted((e1, e2) -> e1.getName() == null ? 1 : e1.getName().compareTo(e2.getName())).toArray(), new Edge[]{
+		Assert.assertArrayEquals(g.inEdges("b", "a")
+				.stream().sorted((edge1, edge2) -> {
+					if (edge1.getName() == null && edge2.getName() == null) {
+						return 0;
+					} else if (edge1.getName() == null) {
+						return 1;
+					} else if (edge2.getName() == null) {
+						return -1;
+					} else {
+						return edge1.getName().compareTo(edge2.getName());
+					}
+				}).toArray(), new Edge[]{
 				new Edge("a", "b", "foo"),
 				new Edge("a", "b")
 		});
