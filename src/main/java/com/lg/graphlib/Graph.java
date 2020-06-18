@@ -122,7 +122,7 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Get node
 	 *
-	 * @return java.util.Collections
+	 * @return java.util.Set
 	 */
 	public Collection<String> getNodes() {
 		return nodes.keySet();
@@ -135,19 +135,19 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Returns those node in the graph that have no in-edge.
 	 *
-	 * @return java.util.List
+	 * @return java.util.Set
 	 */
-	public List<String> getSources() {
-		return this.getNodes().stream().filter(node -> !in.containsKey(node) || in.get(node).size() == 0).collect(Collectors.toList());
+	public Set<String> getSources() {
+		return this.getNodes().stream().filter(node -> !in.containsKey(node) || in.get(node).size() == 0).collect(Collectors.toSet());
 	}
 
 	/**
 	 * Returns those node in the graph that have no out-edge.
 	 *
-	 * @return java.util.List
+	 * @return java.util.Set
 	 */
-	public List<String> getSinks() {
-		return this.getNodes().stream().filter(node -> !out.containsKey(node) || out.get(node).size() == 0).collect(Collectors.toList());
+	public Set<String> getSinks() {
+		return this.getNodes().stream().filter(node -> !out.containsKey(node) || out.get(node).size() == 0).collect(Collectors.toSet());
 	}
 
 	/**
@@ -511,7 +511,7 @@ public class Graph<N, E> implements Serializable {
 			if (sourceId == null)
 				return inEdges;
 
-			return inEdges.stream().filter(edge -> sourceId.equals(edge.getSource())).collect(Collectors.toList());
+			return inEdges.stream().filter(edge -> sourceId.equals(edge.getSource())).collect(Collectors.toSet());
 		}
 		return Collections.emptyList();
 	}
@@ -535,7 +535,7 @@ public class Graph<N, E> implements Serializable {
 			if (targetId == null)
 				return outEdges;
 
-			return outEdges.stream().filter(edge -> targetId.equals(edge.getTarget())).collect(Collectors.toList());
+			return outEdges.stream().filter(edge -> targetId.equals(edge.getTarget())).collect(Collectors.toSet());
 		}
 		return Collections.emptyList();
 	}
@@ -563,7 +563,7 @@ public class Graph<N, E> implements Serializable {
 	public Collection<String> predecessors(String nodeId) {
 
 		if (hasNode(nodeId))
-			return new ArrayList<>(pred.get(nodeId).keySet());
+			return new HashSet<>(pred.get(nodeId).keySet());
 		return Collections.emptyList();
 	}
 
@@ -575,7 +575,7 @@ public class Graph<N, E> implements Serializable {
 	public Collection<String> successors(String nodeId) {
 
 		if (hasNode(nodeId))
-			return new ArrayList<>(sucs.get(nodeId).keySet());
+			return new HashSet<>(sucs.get(nodeId).keySet());
 		return Collections.emptyList();
 	}
 
