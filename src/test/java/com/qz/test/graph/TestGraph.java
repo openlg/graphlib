@@ -162,6 +162,16 @@ public class TestGraph {
 		Assert.assertEquals(g.getNode("a"), "123");
 		Assert.assertEquals(g.getNode("b"), "123");
 		Assert.assertEquals(g.getNode("c"), "123");
+
+		g = new Graph<>();
+		g.setNode("a", "foo");
+		g.setNode("b", "bar");
+		g.setNode("c", "world");
+		g.setEdge("a", "b");
+		g.setEdge("b", "c");
+		Assert.assertArrayEquals(g.getNodes().stream().sorted().toArray(), new String[]{"a", "b", "c"});
+
+		Assert.assertArrayEquals(g.getSinks().toArray(), new String[]{"c"});
 	}
 
 	@Test
