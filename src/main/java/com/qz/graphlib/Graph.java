@@ -412,7 +412,7 @@ public class Graph<N, E> implements Serializable {
 	}
 
 	/**
-	 *
+	 * remove edge
 	 * @param edge
 	 * @return
 	 */
@@ -421,7 +421,7 @@ public class Graph<N, E> implements Serializable {
 	}
 
 	/**
-	 *
+	 * remove edge
 	 * @param sourceId
 	 * @param targetId
 	 * @return
@@ -431,7 +431,7 @@ public class Graph<N, E> implements Serializable {
 	}
 
 	/**
-	 *
+	 * remove edge
 	 * @param sourceId
 	 * @param targetId
 	 * @param name
@@ -470,6 +470,11 @@ public class Graph<N, E> implements Serializable {
 		return setPath(path, null);
 	}
 
+	/**
+	 *
+	 * @param nodeId
+	 * @return
+	 */
 	public Graph<N, E> setPath(String... nodeId){
 		return setPath(Arrays.asList(nodeId), null);
 	}
