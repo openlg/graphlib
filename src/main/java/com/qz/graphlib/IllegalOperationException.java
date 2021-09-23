@@ -1,4 +1,4 @@
-package com.lg.graphlib;
+package com.qz.graphlib;
 
 /**
  * @author lg

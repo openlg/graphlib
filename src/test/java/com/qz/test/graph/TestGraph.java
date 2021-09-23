@@ -1,12 +1,11 @@
 package com.qz.test.graph;
 
-import com.lg.graphlib.Edge;
-import com.lg.graphlib.Graph;
+import com.qz.graphlib.Edge;
+import com.qz.graphlib.Graph;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.stream.Stream;
 
 /**

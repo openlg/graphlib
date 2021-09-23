@@ -1,4 +1,4 @@
-package com.lg.graphlib;
+package com.qz.graphlib;
 
 import java.io.Serializable;
 import java.util.*;
