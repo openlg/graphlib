@@ -1,7 +1,7 @@
-package com.qz.test.graph;
+package io.github.openlg.graph;
 
-import com.qz.graphlib.Edge;
-import com.qz.graphlib.Graph;
+import io.github.openlg.graphlib.Edge;
+import io.github.openlg.graphlib.Graph;
 import org.junit.Assert;
 import org.junit.Test;
 

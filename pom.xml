@@ -4,13 +4,27 @@
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.qz.graphlib</groupId>
+	<groupId>io.github.openlg</groupId>
 	<artifactId>graphlib</artifactId>
 	<version>0.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>graphlib</name>
 	<description>A directed multi-graph library for Java</description>
+	<url>https://github.com/openlg/graphlib</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:git://github.com/openlg/graphlib.git</connection>
+		<url>https://github.com/openlg/graphlib</url>
+	</scm>
 
 	<developers>
 		<developer>

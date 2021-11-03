@@ -1,4 +1,4 @@
-package com.qz.graphlib;
+package io.github.openlg.graphlib;
 
 import java.io.Serializable;
 import java.util.*;
