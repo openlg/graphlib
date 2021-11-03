@@ -39,47 +39,47 @@ public class Graph<N, E> implements Serializable {
 	private boolean compound;
 
 	/**
-	 * nodeId -> node data
+	 * nodeId -&gt; node data
 	 */
 	private Map<String, N> nodes = new HashMap<>();
 
 	/**
-	 * nodeId -> edgeId -> in Edge
+	 * nodeId -&gt; edgeId -&gt; in Edge
 	 */
 	private Map<String, Map<String, Edge>> in = new HashMap<>();
 
 	/**
-	 * nodeId -> in nodeId -> link count
+	 * nodeId -&gt; in nodeId -&gt; link count
 	 */
 	private Map<String, Map<String, Integer>> pred = new HashMap<>();
 
 	/**
-	 * nodeId -> edgeId -> out Edge
+	 * nodeId -&gt; edgeId -&gt; out Edge
 	 */
 	private Map<String, Map<String, Edge>> out = new HashMap<>();
 
 	/**
-	 * nodeId -> out nodeId -> link count
+	 * nodeId -&gt; out nodeId -&gt; link count
 	 */
 	private Map<String, Map<String, Integer>> sucs = new HashMap<>();
 
 	/**
-	 * edgeId -> Edge object
+	 * edgeId -&gt; Edge object
 	 */
 	private Map<String, Edge> edgeObjs = new HashMap<>();
 
 	/**
-	 * edgeId -> getEdge data
+	 * edgeId -&gt; getEdge data
 	 */
 	private Map<String, E> edgeLabels = new HashMap<>();
 
 	/**
-	 * node -> parent node
+	 * node -&gt; parent node
 	 */
 	private Map<String, String> parent = null;
 
 	/**
-	 * node -> children node -> true
+	 * node -&gt; children node -&gt; true
 	 */
 	private Map<String, HashMap<String, Boolean>> children = null;
 
@@ -153,8 +153,8 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Creates or updates the value for the node in the graph.
 	 *
-	 * @param id
-	 * @return
+	 * @param id node id
+	 * @return current node
 	 */
 	public Graph<N, E> setNode(String id) {
 		return setNode(id, null, false);
@@ -163,9 +163,9 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Creates or updates the value for the node in the graph.
 	 *
-	 * @param id
-	 * @param n
-	 * @return
+	 * @param id node id
+	 * @param n node data
+	 * @return current node
 	 */
 	public Graph<N, E> setNode(String id, N n) {
 		return this.setNode(id, n, true);
@@ -198,8 +198,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 * Creates or updates the value for the nodes in the graph.
-	 * @param nodes
-	 * @return
+	 * @param nodes add all node
+	 * @return current graph
 	 */
 	public Graph<N, E> setNodes(Collection<String> nodes) {
 		return setNodes(nodes, null);
@@ -207,8 +207,9 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 * Creates or updates the value for the nodes in the graph.
-	 * @param nodes
-	 * @return
+	 * @param nodes add all node
+	 * @param n data for node
+	 * @return  current graph
 	 */
 	public Graph<N, E> setNodes(Collection<String> nodes, N n) {
 		if (nodes != null) {
@@ -219,8 +220,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 * Returns true if the graph has a node with the id.
-	 * @param id
-	 * @return
+	 * @param id node id
+	 * @return boolean
 	 */
 	public boolean hasNode(String id) {
 		return nodes.containsKey(id);
@@ -228,29 +229,29 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 * Remove the node with the id in the graph or do nothing if the node is not in the graph.
-	 * @param nodeId
-	 * @return
+	 * @param id node id
+	 * @return current graph
 	 */
-	public Graph<N, E> removeNode(String nodeId) {
-		if (hasNode(nodeId)) {
+	public Graph<N, E> removeNode(String id) {
+		if (hasNode(id)) {
 
-			nodes.remove(nodeId);
+			nodes.remove(id);
 
 			if (isCompound()) {
-				removeFromParentsChildList(nodeId);
-				parent.remove(nodeId);
-				new HashSet<>(getChildren(nodeId)).forEach(id -> setParent(id, null));
-				children.remove(nodeId);
+				removeFromParentsChildList(id);
+				parent.remove(id);
+				new HashSet<>(getChildren(id)).forEach(_id -> setParent(_id, null));
+				children.remove(id);
 			}
 
-			//in.get(nodeId).keySet().forEach(edgeId -> removeEdge(edgeObjs.get(edgeId)));
-			new HashSet<>(in.get(nodeId).keySet()).forEach(edgeId -> removeEdge(edgeObjs.get(edgeId)));
-			in.remove(nodeId);
-			pred.remove(nodeId);
+			//in.get(id).keySet().forEach(edgeId -> removeEdge(edgeObjs.get(edgeId)));
+			new HashSet<>(in.get(id).keySet()).forEach(edgeId -> removeEdge(edgeObjs.get(edgeId)));
+			in.remove(id);
+			pred.remove(id);
 
-			new HashSet<>(out.get(nodeId).keySet()).forEach(edgeId -> removeEdge(edgeObjs.get(edgeId)));
-			out.remove(nodeId);
-			sucs.remove(nodeId);
+			new HashSet<>(out.get(id).keySet()).forEach(edgeId -> removeEdge(edgeObjs.get(edgeId)));
+			out.remove(id);
+			sucs.remove(id);
 
 			--nodeCount;
 
@@ -261,7 +262,7 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Returns the number of edges in the graph.
 	 *
-	 * @return
+	 * @return edge count
 	 */
 	public int edgeCount() {
 		return edgeCount;
@@ -270,15 +271,15 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Returns the Edge for each getEdge in the graph.
 	 *
-	 * @return
+	 * @return all edge's
 	 */
 	public Collection<Edge> getEdges() {
 		return edgeObjs.values();
 	}
 
 	/**
-	 * @param edge
-	 * @return
+	 * @param edge Edge
+	 * @return edge
 	 */
 	public E getEdge(Edge edge) {
 		return getEdge(edge.getSource(), edge.getTarget(), edge.getName());
@@ -286,20 +287,20 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param sourceId
-	 * @param targetId
-	 * @return
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @return edge @Edge
 	 */
 	public E getEdge(String sourceId, String targetId) {
 		return getEdge(sourceId, targetId, null);
 	}
 
 	/**
-	 *
-	 * @param sourceId
-	 * @param targetId
-	 * @param name
-	 * @return
+	 * get edge
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @param name edge name
+	 * @return edge data
 	 */
 	public E getEdge(String sourceId, String targetId, String name) {
 		String edgeId = edgeArgsToId(directed, sourceId, targetId, name);
@@ -307,51 +308,51 @@ public class Graph<N, E> implements Serializable {
 	}
 
 	/**
-	 *
-	 * @param sourceId
-	 * @param targetId
-	 * @return
+	 * add edge
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @return current graph
 	 */
 	public Graph<N, E> setEdge(String sourceId, String targetId) {
 		return setEdge(sourceId, targetId, null, null);
 	}
 
 	/**
-	 *
-	 * @param sourceId
-	 * @param targetId
-	 * @param e
-	 * @return
+	 * add edge
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @param e edge data
+	 * @return current graph
 	 */
 	public Graph<N, E> setEdge(String sourceId, String targetId, E e) {
 		return setEdge(sourceId, targetId, e, null);
 	}
 
 	/**
-	 *
-	 * @param edge
-	 * @return
+	 * add new edge
+	 * @param edge edge
+	 * @return current graph
 	 */
 	public Graph<N, E> setEdge(Edge edge) {
 		return setEdge(edge, null);
 	}
 	/**
-	 *
-	 * @param edge
-	 * @param e
-	 * @return
+	 * add new edge
+	 * @param edge edge
+	 * @param e edge data
+	 * @return current graph
 	 */
 	public Graph<N, E> setEdge(Edge edge, E e) {
 		return setEdge(edge.getSource(), edge.getTarget(), e, edge.getName());
 	}
 
 	/**
-	 *
-	 * @param sourceId
-	 * @param targetId
-	 * @param e
-	 * @param name
-	 * @return
+	 * add new edge
+	 * @param sourceId source node id
+	 * @param targetId target ndoe id
+	 * @param e edge data
+	 * @param name edge name
+	 * @return current graph
 	 */
 	public Graph<N, E> setEdge(String sourceId, String targetId, E e, String name) {
 
@@ -398,11 +399,11 @@ public class Graph<N, E> implements Serializable {
 	}
 
 	/**
-	 *
-	 * @param sourceId
-	 * @param targetId
-	 * @param name
-	 * @return
+	 * exist edge
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @param name edge name
+	 * @return has edge
 	 */
 	public boolean hasEdge(String sourceId, String targetId, String name) {
 
@@ -413,8 +414,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 * remove edge
-	 * @param edge
-	 * @return
+	 * @param edge edge
+	 * @return current graph
 	 */
 	public Graph<N, E> removeEdge(Edge edge) {
 		return removeEdge(edge.getSource(), edge.getTarget(), edge.getName());
@@ -422,9 +423,9 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 * remove edge
-	 * @param sourceId
-	 * @param targetId
-	 * @return
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @return current graph
 	 */
 	public Graph<N, E> removeEdge(String sourceId, String targetId) {
 		return removeEdge(sourceId, targetId, null);
@@ -432,10 +433,10 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 * remove edge
-	 * @param sourceId
-	 * @param targetId
-	 * @param name
-	 * @return
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @param name edge name
+	 * @return current graph
 	 */
 	public Graph<N, E> removeEdge(String sourceId, String targetId, String name) {
 
@@ -462,28 +463,28 @@ public class Graph<N, E> implements Serializable {
 	}
 
 	/**
-	 *
-	 * @param path
-	 * @return
+	 * add multi edge by path
+	 * @param path node id collection
+	 * @return current graph
 	 */
 	public Graph<N, E> setPath(Collection<String> path) {
 		return setPath(path, null);
 	}
 
 	/**
-	 *
-	 * @param nodeId
-	 * @return
+	 * add multi edge by node id's
+	 * @param nodeId node id
+	 * @return current graph
 	 */
 	public Graph<N, E> setPath(String... nodeId){
 		return setPath(Arrays.asList(nodeId), null);
 	}
 
 	/**
-	 *
-	 * @param path
-	 * @param e
-	 * @return
+	 * add multi edge by node id's
+	 * @param path node id collection
+	 * @param e edge data
+	 * @return current graph
 	 */
 	public Graph<N, E> setPath(Collection<String> path, E e) {
 		if (path == null)
@@ -504,9 +505,9 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Return all edge that point to the node v.
 	 *
-	 * @param nodeId
+	 * @param nodeId node id
 	 * @param sourceId Optionally filters
-	 * @return java.util.Collection<Edge>
+	 * @return java.util.Collection
 	 */
 	public Collection<Edge> inEdges(String nodeId, String sourceId) {
 		Map<String, Edge> edges = in.get(nodeId);
@@ -528,9 +529,9 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Return all edge that are pointed at by node v.
 	 *
-	 * @param nodeId
+	 * @param nodeId node id
 	 * @param targetId Optionally filters
-	 * @return java.util.Collection<Edge>
+	 * @return java.util.Collection
 	 */
 	public Collection<Edge> outEdges(String nodeId, String targetId) {
 		Map<String, Edge> edges = out.get(nodeId);
@@ -551,9 +552,9 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * Returns all edgeLabels to or from node nodeId regardless of direction.
 	 *
-	 * @param nodeId
+	 * @param nodeId node id
 	 * @param connectedNodeId Optionally filters
-	 * @return
+	 * @return edge's for node
 	 */
 	public Collection<Edge> nodeEdges(String nodeId, String connectedNodeId) {
 		Collection<Edge> _inEdges = inEdges(nodeId, connectedNodeId);
@@ -562,8 +563,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param nodeId
-	 * @return
+	 * @param nodeId node id
+	 * @return predecessors node id
 	 */
 	public Collection<String> predecessors(String nodeId) {
 
@@ -574,8 +575,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param nodeId
-	 * @return
+	 * @param nodeId node id
+	 * @return successors node id
 	 */
 	public Collection<String> successors(String nodeId) {
 
@@ -586,8 +587,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param nodeId
-	 * @return
+	 * @param nodeId node id
+	 * @return predecessors and successors node id's
 	 */
 	public Collection<String> neighbors(String nodeId) {
 		Collection<String> pred = predecessors(nodeId);
@@ -601,9 +602,9 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param nodeId
-	 * @param parentId
-	 * @return
+	 * @param nodeId node id
+	 * @param parentId parent node id
+	 * @return current graph
 	 */
 	public Graph<N, E> setParent(String nodeId, String parentId) {
 
@@ -637,7 +638,7 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param nodeId
+	 * @param nodeId node id
 	 */
 	private void removeFromParentsChildList(String nodeId) {
 		children.get(parent.get(nodeId)).remove(nodeId);
@@ -654,8 +655,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param nodeId
-	 * @return
+	 * @param nodeId node id
+	 * @return children for nodeId
 	 */
 	public Collection<String> getChildren(String nodeId) {
 
@@ -675,8 +676,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param filter
-	 * @return
+	 * @param filter node filter
+	 * @return filtered result
 	 */
 	public Graph<N, E> filterNodes(Predicate<String> filter) {
 		if (filter == null)
@@ -705,8 +706,8 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param nodeId
-	 * @return
+	 * @param nodeId node id
+	 * @return is leaf
 	 */
 	public boolean isLeaf(String nodeId){
 
@@ -721,10 +722,10 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param node
-	 * @param copy
-	 * @param parents
-	 * @return
+	 * @param node node
+	 * @param copy copy node
+	 * @param parents parents
+	 * @return parent node id
 	 */
 	private String findParent(String node, Graph<N, E> copy, Map<String, String> parents){
 		String parent = getParent(node);
@@ -740,7 +741,7 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @return
+	 * @return is directed
 	 */
 	public boolean isDirected() {
 		return directed;
@@ -748,7 +749,7 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param directed
+	 * @param directed set for field directed
 	 */
 	public void setDirected(boolean directed) {
 		this.directed = directed;
@@ -756,7 +757,7 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @return
+	 * @return is multi graph
 	 */
 	public boolean isMultiGraph() {
 		return multiGraph;
@@ -764,7 +765,7 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param multiGraph
+	 * @param multiGraph set for field multiGraph
 	 */
 	public void setMultiGraph(boolean multiGraph) {
 		this.multiGraph = multiGraph;
@@ -772,7 +773,7 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @return
+	 * @return support compound
 	 */
 	public boolean isCompound() {
 		return compound;
@@ -780,7 +781,7 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param compound
+	 * @param compound set for field compound
 	 */
 	public void setCompound(boolean compound) {
 		this.compound = compound;
@@ -788,9 +789,9 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param isDirected
-	 * @param edge
-	 * @return
+	 * @param isDirected is directed
+	 * @param edge edge
+	 * @return node id
 	 */
 	private String edgeObjToId(boolean isDirected, Edge edge) {
 		return edgeArgsToId(isDirected, edge.getSource(), edge.getTarget(), edge.getName());
@@ -798,11 +799,11 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param isDirected
-	 * @param sourceId
-	 * @param targetId
-	 * @param name
-	 * @return
+	 * @param isDirected is directed
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @param name name for node
+	 * @return node id
 	 */
 	private String edgeArgsToId(boolean isDirected, String sourceId, String targetId, String name) {
 		if (!isDirected && sourceId.compareTo(targetId) > 0) {
@@ -815,11 +816,11 @@ public class Graph<N, E> implements Serializable {
 
 	/**
 	 *
-	 * @param isDirected
-	 * @param sourceId
-	 * @param targetId
-	 * @param name
-	 * @return
+	 * @param isDirected is directed
+	 * @param sourceId source node id
+	 * @param targetId target node id
+	 * @param name name for node
+	 * @return edge
 	 */
 	private Edge edgeArgsToEdge(boolean isDirected, String sourceId, String targetId, String name) {
 		if (!isDirected && sourceId.compareTo(targetId) > 0) {
@@ -831,6 +832,11 @@ public class Graph<N, E> implements Serializable {
 		return new Edge(sourceId, targetId, name);
 	}
 
+	/**
+	 *
+	 * @param map map
+	 * @param k k
+	 */
 	private void decrementOrRemoveEntry(Map<String, Integer> map, String k){
 		if(map.containsKey(k)){
 			Integer count = map.get(k);
