@@ -1,5 +1,7 @@
 package io.github.openlg.graphlib;
 
+import io.github.openlg.graphlib.algorithms.*;
+
 import java.io.Serializable;
 import java.util.*;
 import java.util.function.Predicate;
@@ -848,4 +850,48 @@ public class Graph<N, E> implements Serializable {
 		}
 	}
 
+	/**
+	 * Finds all connected components in a graph and returns an array of these components. Each component is itself an array that contains the ids of nodes in the component.
+	 *
+	 * This function takes O(|V|) time.
+	 * @return all connected components
+	 */
+	public List<Graph<N, E>> components() {
+		return new Components().getComponents(this);
+	}
+
+	/**
+	 * This function is an implementation of Tarjan's algorithm which finds all strongly connected components in the directed graph g.
+	 *
+	 * @return This function returns an array of components.
+	 */
+	public List<List<String>> tarjan() {
+		return new Tarjan().tarjan(this);
+	}
+
+	/**
+	 * An implementation of topological sorting (https://en.wikipedia.org/wiki/Topological_sorting).
+	 *
+	 * @return an array of nodes such that for each edge u -&gt; v, u appears before v in the array.
+	 */
+	public List<String> topsort() {
+		return new Topsort().topsort(this);
+	}
+
+	/**
+	 * This method returns true if the graph has no cycles and returns false if it does.
+	 * @return is acyclic
+	 */
+	public boolean isAcyclic() {
+		return new IsAcyclic().isAcyclic(this);
+	}
+
+	/**
+	 * Find cycles.
+	 *
+	 * @return This method returns all nodes that are part of a cycle.
+	 */
+	public List<List<String>> findCycles() {
+		return new FindCycles().findCycles(this);
+	}
 }

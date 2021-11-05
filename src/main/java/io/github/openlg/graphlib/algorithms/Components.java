@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
+ * Finds all connected components in a graph and returns an array of these components.
+ *
  * @author lg&lt;lirufei0808 @ gmail.com&gt;
- * @date 2021/11/5 下午2:16
- * @description Finds all connected components in a graph and returns an array of these components.
+ * 2021/11/5 下午2:16
+ *
  */
 public class Components {
 
