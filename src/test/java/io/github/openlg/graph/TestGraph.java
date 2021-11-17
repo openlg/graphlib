@@ -6,6 +6,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.stream.Stream;
 
 /**
@@ -13,6 +14,58 @@ import java.util.stream.Stream;
  * Create by lg on 4/22/20 7:35 AM
  */
 public class TestGraph {
+
+	@Test
+	public void example() {
+
+		// Create a new directed graph
+		Graph<Object, Object> g = new Graph();
+
+		// Add node "a" to the graph with no label
+		g.setNode("a");
+
+		System.out.println(g.hasNode("a"));
+		// => true
+
+		// Add node "b" to the graph with a String label
+		g.setNode("b", "b's value");
+
+		// Get the label for node b
+		System.out.println(g.getNode("b"));
+		// => "b's value"
+
+		// Add node "c" to the graph with an Object label
+		g.setNode("c", new HashMap<String, Integer>(){{
+			put("key", 1234);
+		}});
+
+		// What nodes are in the graph?
+		System.out.println(g.getNodes());
+		// => `[ 'a', 'b', 'c' ]`
+
+		// Add a directed edge from "a" to "b", but assign no label
+		g.setEdge("a", "b");
+
+		// Add a directed edge from "c" to "d" with an Object label.
+		// Since "d" did not exist prior to this call it is automatically
+		// created with an undefined label.
+		g.setEdge("c", "d", new HashMap<String, String>(){{
+			put("key", "value");
+		}});
+
+		// What edges are in the graph?
+		System.out.println(g.getEdges());
+		// => `[ [ name = null, source = c, target = d ],
+		// 	     [ name = null, source = a, target = b ] ]`.
+
+		// Which edges leave node "a"?
+		System.out.println(g.outEdges("a"));
+		// => `[ [ name = null, source = a, target = b ]]`
+
+		// Which edges enter and leave node "d"?
+		System.out.println(g.nodeEdges("d"));
+		// => `[ [ name = null, source = c, target = d ]]`
+	}
 
 	@Test
 	public void testInitialState(){
