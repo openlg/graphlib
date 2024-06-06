@@ -6,7 +6,7 @@
 
 	<groupId>io.github.openlg</groupId>
 	<artifactId>graphlib</artifactId>
-	<version>0.0.3</version>
+	<version>1.0.1</version>
 	<packaging>jar</packaging>
 
 	<name>graphlib</name>
