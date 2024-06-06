@@ -43,7 +43,7 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * nodeId -&gt; node data
 	 */
-	private Map<String, N> nodes = new HashMap<>();
+	private Map<String, N> nodes = new LinkedHashMap<>();
 
 	/**
 	 * nodeId -&gt; edgeId -&gt; in Edge
