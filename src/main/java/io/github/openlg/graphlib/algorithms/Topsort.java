@@ -19,10 +19,10 @@ public class Topsort {
      * Given a Graph g this function returns an array of nodes such that for each edge u -&gt; v, u appears before v in the array. If the graph has a cycle it is impossible to generate such a list and CycleException is thrown.
      * Takes O(|V| + |E|) time.
      *
-     * @param graph
-     * @param <N>
-     * @param <E>
-     * @return
+     * @param graph the graph instalce
+     * @param <N> type of node
+     * @param <E> type of edge
+     * @return result
      */
     public <N, E> List<String> topsort(Graph<N, E> graph) {
         Map<String, Boolean> visited = new HashMap<>();
