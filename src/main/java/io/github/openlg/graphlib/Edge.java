@@ -1,10 +1,12 @@
 package io.github.openlg.graphlib;
 
+import java.io.Serializable;
+
 /**
  * @author lg
  * Create by lg on 4/24/20 10:41 PM
  */
-public class Edge {
+public class Edge implements Serializable {
 	private String source;
 	private String target;
 	private String name;
