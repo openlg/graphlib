@@ -43,37 +43,37 @@ public class Graph<N, E> implements Serializable {
 	/**
 	 * nodeId -&gt; node data
 	 */
-	private Map<String, N> nodes = new LinkedHashMap<>();
+	private final Map<String, N> nodes = new LinkedHashMap<>();
 
 	/**
 	 * nodeId -&gt; edgeId -&gt; in Edge
 	 */
-	private Map<String, Map<String, Edge>> in = new HashMap<>();
+	private final Map<String, Map<String, Edge>> in = new HashMap<>();
 
 	/**
 	 * nodeId -&gt; in nodeId -&gt; link count
 	 */
-	private Map<String, Map<String, Integer>> pred = new HashMap<>();
+	private final Map<String, Map<String, Integer>> pred = new HashMap<>();
 
 	/**
 	 * nodeId -&gt; edgeId -&gt; out Edge
 	 */
-	private Map<String, Map<String, Edge>> out = new HashMap<>();
+	private final Map<String, Map<String, Edge>> out = new HashMap<>();
 
 	/**
 	 * nodeId -&gt; out nodeId -&gt; link count
 	 */
-	private Map<String, Map<String, Integer>> sucs = new HashMap<>();
+	private final Map<String, Map<String, Integer>> sucs = new HashMap<>();
 
 	/**
 	 * edgeId -&gt; Edge object
 	 */
-	private Map<String, Edge> edgeObjs = new HashMap<>();
+	private final Map<String, Edge> edgeObjs = new HashMap<>();
 
 	/**
 	 * edgeId -&gt; getEdge data
 	 */
-	private Map<String, E> edgeLabels = new HashMap<>();
+	private final Map<String, E> edgeLabels = new HashMap<>();
 
 	/**
 	 * node -&gt; parent node
