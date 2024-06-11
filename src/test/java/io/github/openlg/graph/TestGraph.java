@@ -24,6 +24,7 @@ public class TestGraph {
 		// Add node "a" to the graph with no label
 		g.setNode("a");
 
+		Assert.assertTrue(g.hasNode("a"));
 		System.out.println(g.hasNode("a"));
 		// => true
 
@@ -65,6 +66,8 @@ public class TestGraph {
 		// Which edges enter and leave node "d"?
 		System.out.println(g.nodeEdges("d"));
 		// => `[ [ name = null, source = c, target = d ]]`
+
+		Assert.assertNotNull(g.getEdges());
 	}
 
 	@Test
